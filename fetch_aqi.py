@@ -3,7 +3,11 @@ import json
 import os
 import pandas as pd
 
-API_TOKEN = "281848c24bdeb71347e246adbd3798fafbd5c8a4"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_TOKEN = os.getenv("AQICN_TOKEN")
 CITY = "islamabad"
 CSV_FILE = "readings.csv"
 
