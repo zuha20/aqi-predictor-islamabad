@@ -4,3 +4,5 @@ __pycache__/
 .env
 readings.csv
 *.csv
+model_target_*/
+*.png
