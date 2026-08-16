@@ -1,59 +1,50 @@
 import requests
-import json
 import os
 import pandas as pd
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-API_TOKEN = os.getenv("AQICN_TOKEN")
 CITY = "islamabad"
 CSV_FILE = "readings.csv"
+LATITUDE = 33.7235
+LONGITUDE = 73.11822
 
 
-def fetch_current_aqi(city, token):
-    url = f"https://api.waqi.info/feed/{city}/?token={token}"
-    response = requests.get(url)
-    data = response.json()
+def fetch_current_conditions(lat, lon):
+    aqi_url = "https://air-quality-api.open-meteo.com/v1/air-quality"
+    aqi_params = {"latitude": lat, "longitude": lon, "current": "pm2_5,pm10,us_aqi"}
+    aqi_resp = requests.get(aqi_url, params=aqi_params)
+    aqi_data = aqi_resp.json()["current"]
 
-    if data.get("status") != "ok":
-        raise ValueError(f"API returned an error: {data}")
-
-    return data["data"]
-
-
-def extract_row(raw):
-    iaqi = raw.get("iaqi", {})
-
-    row = {
-        "timestamp": raw.get("time", {}).get("s"),
-        "aqi": raw.get("aqi"),
-        "pm25": iaqi.get("pm25", {}).get("v"),
-        "temperature": iaqi.get("t", {}).get("v"),
-        "humidity": iaqi.get("h", {}).get("v"),
-        "pressure": iaqi.get("p", {}).get("v"),
-        "wind": iaqi.get("w", {}).get("v"),
+    weather_url = "https://api.open-meteo.com/v1/forecast"
+    weather_params = {
+        "latitude": lat, "longitude": lon,
+        "current": "temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m"
     }
-    return row
+    weather_resp = requests.get(weather_url, params=weather_params)
+    weather_data = weather_resp.json()["current"]
+
+    return {
+        "timestamp": aqi_data["time"],
+        "aqi": aqi_data["us_aqi"],
+        "pm25": aqi_data["pm2_5"],
+        "temperature": weather_data["temperature_2m"],
+        "humidity": weather_data["relative_humidity_2m"],
+        "pressure": weather_data["surface_pressure"],
+        "wind": weather_data["wind_speed_10m"],
+    }
 
 
 def save_row(row, csv_file):
     new_row_df = pd.DataFrame([row])
-
     if os.path.exists(csv_file):
         df = pd.read_csv(csv_file)
         df = pd.concat([df, new_row_df], ignore_index=True)
     else:
         df = new_row_df
-
     df.to_csv(csv_file, index=False)
 
 
 if __name__ == "__main__":
-    raw = fetch_current_aqi(CITY, API_TOKEN)
-    row = extract_row(raw)
+    row = fetch_current_conditions(LATITUDE, LONGITUDE)
     save_row(row, CSV_FILE)
-
-    print("Saved new reading:")
+    print("Saved new live reading:")
     print(row)
