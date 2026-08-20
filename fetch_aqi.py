@@ -15,9 +15,9 @@ def fetch_current_conditions(lat, lon):
     aqi_data = aqi_resp.json()["current"]
 
     weather_url = "https://api.open-meteo.com/v1/forecast"
-    weather_params = {
+        weather_params = {
         "latitude": lat, "longitude": lon,
-        "current": "temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m"
+        "current": "temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,precipitation"
     }
     weather_resp = requests.get(weather_url, params=weather_params)
     weather_data = weather_resp.json()["current"]
@@ -30,6 +30,7 @@ def fetch_current_conditions(lat, lon):
         "humidity": weather_data["relative_humidity_2m"],
         "pressure": weather_data["surface_pressure"],
         "wind": weather_data["wind_speed_10m"],
+        "precipitation": weather_data["precipitation"],
     }
 
 
