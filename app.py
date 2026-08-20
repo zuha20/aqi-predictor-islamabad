@@ -130,7 +130,7 @@ def compute_live_features(df_hist, readings_path="readings.csv"):
         return None, None
 
     aqi_vals = today_rows["aqi"].astype(float)
-        precip_col = today_rows["precipitation"] if "precipitation" in today_rows.columns else pd.Series([0.0])
+    precip_col = today_rows["precipitation"] if "precipitation" in today_rows.columns else pd.Series([0.0])
     row = {
         "date": pd.to_datetime(today), "min": aqi_vals.min(), "max": aqi_vals.max(),
         "median": aqi_vals.median(), "q1": aqi_vals.quantile(0.25), "q3": aqi_vals.quantile(0.75),
