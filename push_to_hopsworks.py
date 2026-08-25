@@ -19,7 +19,7 @@ df["date"] = pd.to_datetime(df["date"])
 # --- Create (or get) the feature group ---
 aqi_fg = fs.get_or_create_feature_group(
     name="aqi_features",
-    version=1,
+    version=2,
     primary_key=["date"],
     event_time="date",
     description="Daily AQI, weather, and derived features for Islamabad",
