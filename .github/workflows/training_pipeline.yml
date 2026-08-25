@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy scikit-learn hopsworks joblib python-dotenv pyarrow confluent-kafka
+          pip install pandas numpy scikit-learn hopsworks joblib python-dotenv pyarrow confluent-kafka tensorflow
 
       - name: Run training script
         env:
