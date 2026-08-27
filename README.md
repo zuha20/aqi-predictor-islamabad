@@ -1,4 +1,4 @@
-# 🍃 aqi-predictor-islamabad
+# 🍃Pearls AQI Predictor
 
 **An end-to-end, serverless machine learning pipeline that forecasts Islamabad's Air Quality Index (AQI) three days in advance.**
 
