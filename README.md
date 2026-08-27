@@ -1,5 +1,7 @@
 # 🍃Pearls AQI Predictor
 
+🔗 **Live Dashboard:** https://pearls-aqi-predictorr.streamlit.app/
+
 **An end-to-end, serverless machine learning pipeline that forecasts Islamabad's Air Quality Index (AQI) three days in advance.**
 
 Built as part of a Data Science Internship at **10Pearls**.
