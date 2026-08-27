@@ -5,9 +5,8 @@ requests
 python-dotenv
 plotly
 scikit-learn
-tensorflow
 shap
 hopsworks
 joblib
 pyarrow
-confluent-kafka
+
